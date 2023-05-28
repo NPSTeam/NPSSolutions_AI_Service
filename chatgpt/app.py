@@ -115,7 +115,7 @@ def chat(
                         if "finish_reason" in choice and choice["finish_reason"] == "stop":
                             break
                 formatted_history = create_formatted_history(history_messages)
-                yield formatted_history, history_messages, gr.update(value=f"""<i style="color:#3ADF00"><center>Số token của câu hỏi: {num_tokens_from_messages(history_messages[-num_history_process:])+max_response_tokens}</center></i>""", visible=True)
+                yield formatted_history, history_messages, gr.update(value=f"""<i style="color:#3ADF00"><center>Number of tokens in the question: {num_tokens_from_messages(history_messages[-num_history_process:])+max_response_tokens}</center></i>""", visible=True)
         except:
             formatted_history = create_formatted_history(state)
             yield formatted_history, state, gr.update(value="""<i style="color:red"><center>Có lỗi xảy ra. Có thể do tài khoản của bạn hoặc kết nối mạng.</center></i>""", visible=True)
