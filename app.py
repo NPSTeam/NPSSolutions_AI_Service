@@ -151,7 +151,7 @@ AUTH = os.environ['AUTH']
 HOST = os.environ['HOST']
 if AUTH == "False":
   block.queue(concurrency_count=1)
-  block.launch(server_name = HOST,debug = True)
+  block.launch(server_name = HOST,debug = True, share=True)
 else:
   block.queue(concurrency_count=1)
   block.launch(server_name = HOST, auth = (ID,PASSWORD),debug = True)
