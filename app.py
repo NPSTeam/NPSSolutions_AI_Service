@@ -3,10 +3,8 @@ import gradio as gr
 from dotenv import load_dotenv
 load_dotenv('./.env')
 from chatgpt.app import *
-from speech_to_text.app import *
 from account.app import *
 from lib_app.utils import *
-from summary_long_text.app import *
 from docs.app import *
 
 OPEN_API_KEY = os.environ['OPEN_API_KEY']
@@ -20,55 +18,6 @@ def filter_type_account(type_account):
     return gr.update(visible=True), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False), gr.update(visible=False)
   elif type_account == "Tài khoản NPSSolutions":
     return gr.update(visible=False), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True), gr.update(visible=True)
-#func check options cut video
-def filter_full_time(fulltime, link_youtube):
-  if fulltime == True:
-    return gr.update(visible=False), gr.update(visible=False)
-  elif fulltime == False:
-    print("This link: ",link_youtube)
-    length = length_link(link_youtube)
-    return gr.update(visible=True, maximum=length), gr.update(visible=True, maximum=length)
-# func check ready result speech to text
-def check_result_speech_to_text(whisper_result):
-   if whisper_result:
-      return gr.update(interactive=True)
-   else:
-      return gr.update(interactive=False)
-
-# func check exits link youtube
-def check_link_youtube(link_youtube):
-   try:
-      populate_metadata(link_youtube)
-      return gr.update(interactive=True), gr.update(value="""<i style="color:#3ADF00"><center>Link youtube hợp lệ. Mời tiếp tục</center></i>""", visible=True)
-   except:
-      return gr.update(interactive=False), gr.update(value="""<i style="color:red"><center>Link youtube không hợp lệ. Xin thử lại</center></i>""", visible=True)
-
-# func check type speech_to_text
-def check_type_transcripts(type_transcripts):
-   if type_transcripts == "Sử dụng subtitles của Youtube":
-      return gr.update(visible=False), gr.update(visible=True)
-   else:
-      return gr.update(visible=True), gr.update(visible=False)
-
-# process before speech_to_text
-def process_speech_to_text(type_transcripts, language_transcripts,link_youtube, cut_fulltime, msecond_start, msecond_end, main_key):
-   if type_transcripts == "Sử dụng subtitles của Youtube":
-      if language_transcripts == "Tiếng Việt":
-        transcripts = youtube_transcripts_with_subtitles(link_youtube, "vi")
-      else:
-        transcripts = youtube_transcripts_with_subtitles(link_youtube, "en")
-      return transcripts
-   else:
-      transcripts = speech_to_text(link_youtube, cut_fulltime, msecond_start, msecond_end, main_key)
-      return transcripts
-   
-# function process speech to text
-def process_transcribe_with_cut_file(audio_upload, main_key):
-   result = transcribe_with_cut_file(audio_upload, main_key)
-   if result:
-      return result, gr.update(value="""<i style="color:#3ADF00"><center>Bóc băng thành công. Mời tiếp tục</center></i>""", visible=True), gr.update(interactive=True), gr.update(interactive=True)
-   else:
-      return result, gr.update(value="""<i style="color:red"><center>Đã có lỗi xảy ra. Xin thử lại</center></i>""", visible=True), gr.update(interactive=False), gr.update(interactive=False)
 
 # function update main key (openai api key) for all app
 def update_main_key(api_key_textbox):

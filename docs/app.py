@@ -63,6 +63,8 @@ def create_formatted_history_docs(history_messages: List[dict]) -> List[Tuple[st
 
     return formatted_history
 
+
+
 def chat_docs(
     message: str, state: List[Dict[str, str]], api_key: str
 ) -> Generator[Tuple[List[Tuple[str, str]], List[Dict[str, str]]], None, None]:
@@ -94,6 +96,7 @@ def chat_docs(
         response_message = ""
         try:
             print("This history: ",history_messages)
+            
             history_messages_final = data_chatbot_npsgpt + history_messages[-2:]
             if len(history_messages) == 2:
                 history_messages_process = history_messages
