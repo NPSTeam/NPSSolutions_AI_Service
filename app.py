@@ -98,9 +98,10 @@ ID = os.environ['ID']
 PASSWORD = os.environ['PASSWORD']
 AUTH = os.environ['AUTH']
 HOST = os.environ['HOST']
+GRADIO_SERVER_PORT = os.environ['GRADIO_SERVER_PORT']
 if AUTH == "False":
   block.queue(concurrency_count=1)
-  block.launch(server_name = HOST,debug = True, share=True)
+  block.launch(server_name = HOST,debug = True, share=True, server_port=int(GRADIO_SERVER_PORT))
 else:
   block.queue(concurrency_count=1)
   block.launch(server_name = HOST, auth = (ID,PASSWORD),debug = True)
