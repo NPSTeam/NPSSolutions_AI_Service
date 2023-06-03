@@ -99,13 +99,11 @@ PASSWORD = os.environ['PASSWORD']
 AUTH = os.environ['AUTH']
 HOST = os.environ['HOST']
 GRADIO_SERVER_PORT = os.environ['GRADIO_SERVER_PORT']
-KEY = os.environ['KEY']
-PEM = os.environ['PEM']
 
 
 if AUTH == "False":
   block.queue(concurrency_count=1)
-  block.launch(server_name = HOST,debug = True, share=True, server_port=int(GRADIO_SERVER_PORT), ssl_certificate=PEM, ssl_key=KEY)
+  block.launch(server_name = HOST,debug = True, share=True, server_port=int(GRADIO_SERVER_PORT))
 else:
   block.queue(concurrency_count=1)
   block.launch(server_name = HOST, auth = (ID,PASSWORD),debug = True)
