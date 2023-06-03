@@ -10,7 +10,7 @@ import gradio as gr
 import requests
 import tiktoken
 from lib_app.utils import *
-from .data_train import *
+# from .data_train import *
 #if you have OpenAI API key as an environment variable, enable the below
 #openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -63,7 +63,26 @@ def create_formatted_history_docs(history_messages: List[dict]) -> List[Tuple[st
 
     return formatted_history
 
+def get_api_data(url):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Nếu có lỗi trong quá trình yêu cầu, raise exception
+        data = response.json()  # Chuyển đổi nội dung trả về thành đối tượng JSON
+        return data
+    except requests.exceptions.RequestException as e:
+        print(f"Đã xảy ra lỗi trong quá trình yêu cầu: {e}")
+        return None
 
+# URL của API
+url = "http://68.183.226.224:8085/api/v1/chat-content"
+
+# Gọi hàm để thực hiện yêu cầu GET
+api_data = get_api_data(url)
+
+if api_data is not None:
+    print(api_data)
+    output_api = api_data["data"]
+    data_chatbot_npsgpt = [{'role': item['role'], 'content': item['content']} for item in output_api]
 
 def chat_docs(
     message: str, state: List[Dict[str, str]], api_key: str
@@ -96,7 +115,8 @@ def chat_docs(
         response_message = ""
         try:
             print("This history: ",history_messages)
-            
+            print("data_chatbot_npsgpt_in")
+            print(data_chatbot_npsgpt)
             history_messages_final = data_chatbot_npsgpt + history_messages[-2:]
             if len(history_messages) == 2:
                 history_messages_process = history_messages
