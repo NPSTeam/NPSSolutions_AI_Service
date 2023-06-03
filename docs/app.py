@@ -76,17 +76,19 @@ def get_api_data(url):
 # URL của API
 url = "http://68.183.226.224:8085/api/v1/chat-content"
 
-# Gọi hàm để thực hiện yêu cầu GET
-api_data = get_api_data(url)
-
-if api_data is not None:
-    print(api_data)
-    output_api = api_data["data"]
-    data_chatbot_npsgpt = [{'role': item['role'], 'content': item['content']} for item in output_api]
 
 def chat_docs(
     message: str, state: List[Dict[str, str]], api_key: str
 ) -> Generator[Tuple[List[Tuple[str, str]], List[Dict[str, str]]], None, None]:
+
+    # Gọi hàm để thực hiện yêu cầu GET
+    api_data = get_api_data(url)
+
+    if api_data is not None:
+        print(api_data)
+        output_api = api_data["data"]
+        data_chatbot_npsgpt = [{'role': item['role'], 'content': item['content']} for item in output_api]
+
     key_open = encode("decode", api_key, SECRET_KEY)
     LLM = OpenAI(model_name=model_name, temperature=0.1, openai_api_key=key_open)
     print("State 1: ",state)
